@@ -40,7 +40,8 @@ class SentimentAnalyzer:
 
         words = word_tokenize(text)  # tokenize text into words
 
-        filtered_words = [self.lemmatizer.lemmatize(word) for word in words if word not in self.stopwords]
+        filtered_words = [self.lemmatizer.lemmatize(
+            word) for word in words if word not in self.stopwords]
         preprocessed_text = ' '.join(filtered_words)
 
         return preprocessed_text
@@ -49,7 +50,8 @@ class SentimentAnalyzer:
         tfidf_vectorizer = TfidfVectorizer()
         tfidf_matrix = tfidf_vectorizer.fit_transform(text)
 
-        X_train, X_test, y_train, y_test = train_test_split(tfidf_matrix, sentiments, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(
+            tfidf_matrix, sentiments, test_size=0.2, random_state=42)
 
         model = MultinomialNB()
         model.fit(X_train, y_train)
@@ -65,7 +67,8 @@ class SentimentAnalyzer:
         tweets = self.scrape_tweets(keyword, count)
 
         preprocessed_tweets = [self.preprocess_text(tweet) for tweet in tweets]
-        sentiments = ["positive" if "positive" in tweet else "negative" for tweet in tweets]
+        sentiments = [
+            "positive" if "positive" in tweet else "negative" for tweet in tweets]
 
         accuracy, report = self.get_sentiment(preprocessed_tweets, sentiments)
 
@@ -74,7 +77,8 @@ class SentimentAnalyzer:
         print("Classification Report:")
         print(report)
 
-        sentiments_df = pd.DataFrame({'Tweets': tweets, 'Sentiments': sentiments})
+        sentiments_df = pd.DataFrame(
+            {'Tweets': tweets, 'Sentiments': sentiments})
         sentiments_df['Preprocessed Tweets'] = preprocessed_tweets
 
         return sentiments_df
@@ -95,7 +99,8 @@ if __name__ == '__main__':
     access_token = 'your_access_token'
     access_token_secret = 'your_access_token_secret'
 
-    sentimentAnalyzer = SentimentAnalyzer(consumer_key, consumer_secret, access_token, access_token_secret)
+    sentimentAnalyzer = SentimentAnalyzer(
+        consumer_key, consumer_secret, access_token, access_token_secret)
 
     keyword = input("Enter a keyword to analyze: ")
     count = int(input("Enter the number of tweets to scrape: "))
